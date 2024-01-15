@@ -8,12 +8,12 @@ import {
   Param,
   Patch,
   Post,
-  UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
+import mongoose from 'mongoose';
 import { CreateUserDTO, UpdateUserDTO } from './dto/User.dto';
 import { UserService } from './user.service';
-import mongoose from 'mongoose';
+import { UsePipes } from '@nestjs/common/decorators/core/use-pipes.decorator';
 
 @Controller('api/v1/users')
 @UsePipes(new ValidationPipe())
