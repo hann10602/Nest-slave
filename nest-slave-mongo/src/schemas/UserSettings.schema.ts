@@ -3,7 +3,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 @Schema()
 export class UserSettings {
   @Prop({ required: false })
-  receiveNotificaiton?: boolean;
+  receiveNotification?: boolean;
 
   @Prop({ required: false })
   receiveEmail?: boolean;

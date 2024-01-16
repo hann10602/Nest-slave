@@ -18,16 +18,38 @@ export class UserService {
   }
 
   async getUser(id: string) {
-    return await this.userModel.findById(id);
+    return await (
+      await this.userModel.findById(id)
+    ).populate(['settings', 'posts']);
   }
 
-  createUser(dto: CreateUserDTO) {
-    const newUser = new this.userModel(dto);
+  async createUser({ settings, ...dto }: CreateUserDTO) {
+    if (settings) {
+      const newSettings = new this.userSettingModel(settings);
+      const newSavedSettings = await newSettings.save();
 
+      console.log(newSavedSettings._id);
+      const newUser = new this.userModel({
+        ...dto,
+        settings: newSavedSettings._id,
+      });
+
+      return newUser.save();
+    }
+
+    const newUser = new this.userModel(dto);
     return newUser.save();
   }
 
-  updateUser(id: string, dto: UpdateUserDTO) {
+  async updateUser(id: string, { settings, ...dto }: UpdateUserDTO) {
+    if (settings) {
+      const user = await this.userModel.findById(id);
+
+      await this.userSettingModel.findByIdAndUpdate(user.settings, settings);
+
+      return this.userModel.findByIdAndUpdate(id, dto, { new: true });
+    }
+
     return this.userModel.findByIdAndUpdate(id, dto, { new: true });
   }
 
