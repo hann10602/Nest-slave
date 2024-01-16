@@ -1,0 +1,21 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type UserSettings {
+  userId: Int
+  receiveNotification: Boolean!
+  receiveEmail: Boolean!
+}
+
+type User {
+  id: Int!
+  username: String!
+  displayName: String
+  settings: UserSettings
+}
+
+type Query {
+  getUserById(id: Int!): User
+  getUsers: [User!]
+}
