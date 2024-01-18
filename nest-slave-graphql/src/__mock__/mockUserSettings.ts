@@ -1,12 +1,12 @@
 export const mockUserSettings = [
   {
     userId: 1,
-    receiveMessage: false,
-    receiveEmails: true,
+    receiveNotification: false,
+    receiveEmail: true,
   },
   {
     userId: 3,
-    receiveMessage: true,
-    receiveEmails: false,
+    receiveNotification: true,
+    receiveEmail: false,
   },
 ];
