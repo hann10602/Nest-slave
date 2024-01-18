@@ -3,9 +3,10 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ApolloDriver, ApolloDriverConfig } from '@nestjs/apollo';
 import { UserSettingsResolver } from './graphql/resolvers/UserSettingsResolver';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { UsersModule } from './users/users.module';
 import { User } from './graphql/models/User';
 import { UserSettings } from './graphql/models/UserSetting';
+import { UserSettingsService } from './graphql/resolvers/UserSettingsService';
+import { UsersModule } from './users/users.module';
 
 @Module({
   imports: [
@@ -13,20 +14,20 @@ import { UserSettings } from './graphql/models/UserSetting';
       driver: ApolloDriver,
       autoSchemaFile: 'src/schema.gql',
     }),
-    UsersModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
       port: 3306,
       username: 'root',
-      password: 'mny10602',
-      database: 'nodejs',
+      password: '123456',
+      database: 'hibernate',
       entities: [User, UserSettings],
       synchronize: true,
+      logging: true,
     }),
     UsersModule,
   ],
+  providers: [],
   controllers: [],
-  providers: [UserSettingsResolver],
 })
 export class AppModule {}

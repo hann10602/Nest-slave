@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common/decorators/core/injectable.decorator';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from 'src/graphql/models/User';
 import { CreateUserInput } from 'src/graphql/utils/CreateUserInput';
@@ -14,9 +14,13 @@ export class UserService {
     return this.userRepository.find();
   }
 
+  async getUserById(id: number) {
+    return this.userRepository.findOneBy({ id });
+  }
+
   createUser(createUserData: CreateUserInput) {
     const newUser = this.userRepository.create(createUserData);
 
-    this.userRepository.save(newUser);
+    return this.userRepository.save(newUser);
   }
 }

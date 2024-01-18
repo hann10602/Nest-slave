@@ -4,7 +4,7 @@ import { Column, Entity, PrimaryColumn } from 'typeorm';
 @ObjectType()
 @Entity({ name: 'user-settings' })
 export class UserSettings {
-  @Field((type) => Int, { nullable: true })
+  @Field((type) => Int)
   @PrimaryColumn()
   userId: number;
 

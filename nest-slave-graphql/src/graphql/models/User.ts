@@ -23,8 +23,8 @@ export class User {
   @Column({ nullable: true })
   displayName?: string;
 
-  @Field({ nullable: true })
   @OneToOne(() => UserSettings)
   @JoinColumn()
+  @Field({ nullable: true })
   settings?: UserSettings;
 }
