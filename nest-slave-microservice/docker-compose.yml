@@ -1,0 +1,24 @@
+services:
+  api_gateway:
+    build: ./http-api-gateway
+    ports:
+      - "8080:8080"
+    volumes:
+      - "./http-api-gateway/src:/usr/src/app/src"
+    command: npm run start:dev
+    env:
+      - PORT=8080
+  user-service:
+    build: ./user-service
+    volumes:
+      - "./user-service/src:/usr/src/app/src"
+    command: npm run start:dev
+  payment-service:
+    build: ./payment-service
+    volumes:
+      - "./payment-service/src:/usr/src/app/src"
+    command: npm run start:dev
+  nats:
+    image: nats
+    port:
+      - 4222:4222
