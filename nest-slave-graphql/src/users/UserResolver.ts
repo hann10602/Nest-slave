@@ -7,15 +7,14 @@ import {
   ResolveField,
   Resolver,
 } from '@nestjs/graphql';
-import { mockUserSettings } from 'src/__mock__/mockUserSettings';
+import { UserSettingsService } from 'src/graphql/resolvers/UserSettingsService';
 import { User } from '../graphql/models/User';
 import { UserSettings } from '../graphql/models/UserSetting';
 import { CreateUserInput } from '../graphql/utils/CreateUserInput';
 import { UserService } from './UserService';
-import { UserSettingsService } from 'src/graphql/resolvers/UserSettingsService';
 
 @Resolver((of) => User)
-export class UserResvoler {
+export class UserResolver {
   constructor(
     private userService: UserService,
     private userSettingsService: UserSettingsService,
