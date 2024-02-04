@@ -7,6 +7,7 @@ import {
   UserSettings,
   UserSettingsSchema,
 } from 'src/schemas/UserSettings.schema';
+import { Role, RoleSchema } from 'src/schemas/Role.schema';
 
 @Module({
   imports: [
@@ -19,9 +20,14 @@ import {
         name: UserSettings.name,
         schema: UserSettingsSchema,
       },
+      {
+        name: Role.name,
+        schema: RoleSchema,
+      },
     ]),
   ],
   controllers: [UserController],
   providers: [UserService],
+  exports: [UserService],
 })
 export class UserModule {}

@@ -8,12 +8,14 @@ import {
   Param,
   Patch,
   Post,
+  UseGuards,
   ValidationPipe,
 } from '@nestjs/common';
+import { UsePipes } from '@nestjs/common/decorators/core/use-pipes.decorator';
 import mongoose from 'mongoose';
 import { CreateUserDTO, UpdateUserDTO } from './dto/User.dto';
 import { UserService } from './user.service';
-import { UsePipes } from '@nestjs/common/decorators/core/use-pipes.decorator';
+import { CheckRoleGuard, VerifyTokenGuard } from 'src/auth/auth.guard';
 
 @Controller('api/v1/users')
 @UsePipes(new ValidationPipe())
@@ -21,6 +23,7 @@ export class UserController {
   constructor(private userService: UserService) {}
 
   @Get('get-all')
+  @UseGuards(VerifyTokenGuard, new CheckRoleGuard(['USER']))
   getUSers() {
     return this.userService.getUsers();
   }
