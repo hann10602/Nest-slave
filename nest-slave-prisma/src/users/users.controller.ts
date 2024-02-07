@@ -1,18 +1,20 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpStatus,
   Param,
   ParseIntPipe,
+  Patch,
   Post,
-  Put,
   UsePipes,
   ValidationPipe,
 } from '@nestjs/common';
-import { UsersService } from './users.service';
-import { CreateUserDTO } from './dtos/createUser.dto';
 import { UpdateUserDTO } from './dtos/UpdateUser.dto';
+import { CreateUserDTO } from './dtos/createUser.dto';
+import { UsersService } from './users.service';
+import { UpdateUserSettingsDTO } from './dtos/UpdateUserSettingsDTO';
 
 @Controller('api/v1/users')
 export class UsersController {
@@ -40,7 +42,7 @@ export class UsersController {
     return this.usersService.createUser(createUserDTO);
   }
 
-  @Put(':id')
+  @Patch(':id')
   @UsePipes(ValidationPipe)
   updateUser(
     @Param(
@@ -51,5 +53,21 @@ export class UsersController {
     @Body() updateUserDTO: UpdateUserDTO,
   ) {
     return this.usersService.updateUser(id, updateUserDTO);
+  }
+
+  @Patch(':id/settings')
+  updateUserSettingsByUserId(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateUserSettingsDTO: UpdateUserSettingsDTO,
+  ) {
+    return this.usersService.updateUserSettingsByUserId(
+      id,
+      updateUserSettingsDTO,
+    );
+  }
+
+  @Delete(':id')
+  deleteUser(@Param('id', ParseIntPipe) id: number) {
+    return this.usersService.deleteUser(id);
   }
 }
