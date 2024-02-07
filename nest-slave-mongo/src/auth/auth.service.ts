@@ -1,8 +1,10 @@
+/* eslint-disable prettier/prettier */
 import { Injectable } from '@nestjs/common';
 import { UnauthorizedException } from '@nestjs/common/exceptions/unauthorized.exception';
 import { JwtService } from '@nestjs/jwt';
 import { UserService } from 'src/users/user.service';
-import { TokenPayloadDTO } from './dto/Auth.dto';
+import { CredentialDTO, TokenPayloadDTO } from './dto/Auth.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
@@ -11,14 +13,25 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signIn(username: string): Promise<{ access_token: string }> {
-    const loginUser = await this.userService.findOneByUsername(username);
+  async signIn(credential: CredentialDTO): Promise<{ access_token: string }> {
+    const loginUser = await this.userService.findOneByUsername(
+      credential.username,
+    );
 
     if (!loginUser) throw new UnauthorizedException();
 
+    const isPasswordMatched = await bcrypt.compare(
+      credential.password,
+      loginUser.password,
+    );
+
+    if (!isPasswordMatched) {
+      throw new UnauthorizedException('Wrong password');
+    }
+
     const payload: TokenPayloadDTO = {
       username: loginUser?.username,
-      displayName: loginUser?.username,
+      displayName: loginUser?.displayName,
       role: loginUser?.role?.code,
     };
 

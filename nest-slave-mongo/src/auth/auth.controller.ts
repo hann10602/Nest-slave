@@ -18,6 +18,6 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   @Post('sign-in')
   signIn(@Body() credential: CredentialDTO) {
-    return this.authService.signIn(credential.username);
+    return this.authService.signIn(credential);
   }
 }

@@ -9,12 +9,14 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { PostsModule } from './posts/posts.module';
 import { AuthModule } from './auth/auth.module';
 import { AuthMiddleware } from './auth/auth.middleware';
+import { GatewayModule } from './gateway/gateway.module';
 
 @Module({
   imports: [
     UserModule,
     PostsModule,
     AuthModule,
+    GatewayModule,
     MongooseModule.forRoot('mongodb://127.0.0.1/nest-slave'),
   ],
   controllers: [],

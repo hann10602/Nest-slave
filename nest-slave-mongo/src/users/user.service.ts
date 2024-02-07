@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
+import * as bcrypt from 'bcrypt';
 import { Model } from 'mongoose';
+import { Role } from 'src/schemas/Role.schema';
 import { User } from 'src/schemas/User.schema';
 import { UserSettings } from 'src/schemas/UserSettings.schema';
 import { CreateUserDTO, UpdateUserDTO } from './dto/User.dto';
-import { Role } from 'src/schemas/Role.schema';
 
 @Injectable()
 export class UserService {
@@ -34,20 +35,27 @@ export class UserService {
     ).populate(['settings', 'posts', 'role']);
   }
 
-  async createUser({ settings, ...dto }: CreateUserDTO) {
+  async createUser({ settings, password, ...dto }: CreateUserDTO) {
+    const salt = 10;
+    const hashPassword = await bcrypt.hash(password, salt);
+
     if (settings) {
       const newSettings = new this.userSettingModel(settings);
       const newSavedSettings = await newSettings.save();
 
       const newUser = new this.userModel({
         ...dto,
+        password: hashPassword,
         settings: newSavedSettings._id,
       });
 
       return newUser.save();
     }
 
-    const newUser = new this.userModel({ ...dto });
+    const newUser = new this.userModel({
+      password: hashPassword,
+      ...dto,
+    });
     return newUser.save();
   }
 
